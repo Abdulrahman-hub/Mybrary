@@ -4,8 +4,14 @@ const router = express.Router()
 const Author = require('../models/author')
 
 // All Authors Route
-router.get('/', (req, res) => {
-    res.render('authors/index')
+router.get('/', async (req, res) => {
+    try {
+        const authors = await Author.find({})
+        res.render('authors/index', { authors: authors })
+    } catch(err) {
+        res.redirect('/')
+    }
+    
 })
 
 // New Authors Route
@@ -21,7 +27,7 @@ router.post('/', async (req, res) => {
     try {
         const newAuthor = await author.save()
         res.redirect('authors')
-    } catch(err) {
+    } catch (err) {
         res.render('authors/new', {
             author: author,
             errorMessage: err
