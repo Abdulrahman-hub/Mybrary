@@ -50,12 +50,14 @@ router.post('/', upload.single('cover'), async (req, res) => {
     })
     try {
         const newBook = await book.save()
-        req.redirect('books')
+        res.redirect('books')
     } catch(err) {
         if (book.coverImageName != null) {
             removeBookCover(book.coverImageName)
         }
         renderNewPage(res, book, true)
+        console.log(err);
+        
     }
 })
 
