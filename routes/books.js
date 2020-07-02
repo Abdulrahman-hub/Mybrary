@@ -32,6 +32,15 @@ router.get('/new', async (req, res) => {
     renderNewPage(res, new Book())
 })
 
+router.get('/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id).populate('author').exec()
+        res.render('books/show', { book: book })
+    } catch (err) {
+        res.redirect('/')
+    }
+})
+
 // Creat book Route
 router.post('/', async (req, res) => {
     const book = new Book({
